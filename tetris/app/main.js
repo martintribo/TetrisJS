@@ -1,5 +1,5 @@
 define(['app/game'], function(Game) {
-	var game = new Game('container');
+	var game = new Game('canvas');
 
 	game.start();
 });
