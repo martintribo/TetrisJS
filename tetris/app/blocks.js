@@ -62,7 +62,7 @@ define({
 		Block.prototype.rightOf = function(spot) {
 			for (var i = 0; i < this.getCells().length; i++) {
 				var c = this.getCells()[i];
-				console.log('r ' + spot + ' ' + c.x + ' ' + this.x);
+				
 				if (c.x + this.x > spot) {
 					return true;
 				}

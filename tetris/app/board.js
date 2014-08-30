@@ -164,14 +164,11 @@ define(['app/blocks'], function(block_manager) {
 			var row_full = this.rowIsFull(r);
 
 			if (row_full) {
-				console.log('row ' + (r - 2) + ' is full');
 				var r2 = r - 1;
 				while (r2 >= 0 && this.cells[r2] != null) {
-					console.log('row ' + (r2 - 2) + ' is being shifted to ' + (r2 - 1));
 					this.cells[r2 + 1] = this.cells[r2];
 					r2--;
 				}
-				console.log('row ' + (r2 -1) + ' is being cleared');
 				this.cells[r2 + 1] = null;
 			}
 

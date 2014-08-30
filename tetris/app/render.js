@@ -1,4 +1,4 @@
-define(['kinetic'], function(Kinetic) {
+define(function() {
 	var Renderer = function(element) {
 		this.canvas = window.document.getElementById(element);
 		this.context = this.canvas.getContext('2d');

@@ -1,4 +1,4 @@
-define(['app/render', 'app/board', 'app/blocks'], function(Renderer, Board, BlockManager) {
+define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, Board, BlockManager, GUI) {
 	//BlockManager.registerBlockType('dot', [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}]);
 	//BlockManager.registerBlockType('swag', [{x: 0, y: 0}, {x: 1, y: 1}, {x: 2, y: 2}]);
 	function c(x, y) {
@@ -66,29 +66,37 @@ define(['app/render', 'app/board', 'app/blocks'], function(Renderer, Board, Bloc
 	var Game = function(element) {
 		this.board = new Board();
 		this.render = new Renderer(element);
+		this.gui = new GUI(element);
 		this.period = 200;
 		this.interval = null;
+		this.state = 'paused'; //paused, active, ended
 
 		var self = this;
 
 		this.canvas = document.getElementById(element);
 		this.canvas.addEventListener('keydown', function(event) {
-			if (event.keyCode === 37) {
+			if (event.keyCode === 37) { //left
 				self.board.shiftBlockLeft();
 				self.render.draw(self.board);
-			} else if (event.keyCode === 38) {
+			} else if (event.keyCode === 38) { //up
 				self.board.rotateBlockCW();
 				self.render.draw(self.board);
-			} else if (event.keyCode === 39) {
+			} else if (event.keyCode === 39) { //right
 				self.board.shiftBlockRight();
 				self.render.draw(self.board);
-			} else if (event.keyCode === 40) {
+			} else if (event.keyCode === 40) { //down
 				if (!self.down) {
 					self.down = true;
 					self.period -= 100;
 					self.resetInterval();
 					self.tick(false);
-					console.log('down ' + self.period);
+				}
+			} else if (event.keyCode == 80) { //p
+				if (self.state == 'paused') {
+					self.gui.unpause();
+					self.start();
+				} else {
+					self.pause();
 				}
 			}
 		});
@@ -97,7 +105,6 @@ define(['app/render', 'app/board', 'app/blocks'], function(Renderer, Board, Bloc
 				self.period += 100;
 				self.down = false;
 				self.resetInterval();
-				console.log('back up ' + self.period);
 			}
 		});
 	};
@@ -120,6 +127,7 @@ define(['app/render', 'app/board', 'app/blocks'], function(Renderer, Board, Bloc
 	Game.prototype.start = function() {
 		this.canvas.focus();
 		this.resetInterval();
+		this.state = 'active';
 	};
 
 	Game.prototype.tick = function(tick_again) {
@@ -143,7 +151,12 @@ define(['app/render', 'app/board', 'app/blocks'], function(Renderer, Board, Bloc
 	};
 
 	Game.prototype.pause = function() {
+		var self = this;
 		window.clearTimeout(this.interval);
+		this.gui.pause(function() {
+			self.start();
+		});
+		this.state = 'paused'
 	};
 
 	Game.prototype.reset = function() {
