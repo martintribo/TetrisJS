@@ -49,6 +49,29 @@
 	left: 50%;
 	top: 50%;
 }
+
+#start-button {
+	position: absolute;
+	left: 50%;
+	top: 40%;
+}
+
+#tetris-title {
+	position: relative;
+	top: 10%;
+	color: #FFFFFF;
+	font-family: "Verdana", Geneva, sans-serif;
+	font-size: 4em;
+}
+
+#tetris-start-notes {
+	position: relative;
+	top: 35%;
+	color: #FFFFFF;
+	font-family: "Verdana", Geneva, sans-serif;
+	font-size: 2em;
+}
+
 .gui-background {
 	position: absolute;
 	left: 0;
@@ -58,4 +81,5 @@
 	padding: 0;
 	margin: 0;
 	background-color: rgba(0, 0, 0, 0.5);
+	text-align: center;
 }

@@ -69,7 +69,7 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 		this.gui = new GUI(element);
 		this.period = 200;
 		this.interval = null;
-		this.state = 'paused'; //paused, active, ended
+		this.state = 'start'; //start, paused, active, ended
 
 		var self = this;
 
@@ -107,6 +107,9 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 				self.resetInterval();
 			}
 		});
+
+		this.render.draw(this.board);
+		this.showStart();
 	};
 
 	Game.prototype.resetInterval = function() {
@@ -158,6 +161,13 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 		});
 		this.state = 'paused'
 	};
+
+	Game.prototype.showStart = function() {
+		var self = this;
+		this.gui.showStart(function() {
+			self.start();
+		});
+	}
 
 	Game.prototype.reset = function() {
 		this.board.reset();
