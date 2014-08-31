@@ -156,6 +156,8 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 					this.interval = window.setTimeout(func, this.period);
 				}
 			}
+		} else {
+			this.showEnd();
 		}
 	};
 
@@ -171,6 +173,15 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 	Game.prototype.showStart = function() {
 		var self = this;
 		this.gui.showStart(function() {
+			self.start();
+		});
+	}
+
+	Game.prototype.showEnd = function() {
+		var self = this;
+		
+		this.gui.showEnd(function() {
+			self.reset();
 			self.start();
 		});
 	}

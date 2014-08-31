@@ -1,16 +1,20 @@
 define(['app/blocks'], function(block_manager) {
 
 	var Board = function() {
+		this.reset();
+	}
+
+	Board.prototype.reset = function() {
 		this.blocks = [];
 		this.rows = 20;
 		this.columns = 10;
+		this.ended = false;
 		this.setupNewBlock();
 		this.cells = new Array(this.rows + 2);
 		for (var i = 0; i < this.cells.length; i++) {
 			this.cells[i] = null;
 		}
 		this.last_tick = Date.now();
-		this.last_move = Date.now();
 	}
 
 	Board.prototype.tick = function(period) {
@@ -36,8 +40,12 @@ define(['app/blocks'], function(block_manager) {
 	};
 	Board.prototype.handlePlace = function() {
 		this.placeBlock();
-		this.checkRows();
-		this.setupNewBlock();
+		if (!this.cells[1]) {
+			this.checkRows();
+			this.setupNewBlock();
+		} else {
+			this.ended = true;
+		}
 	};
 	Board.prototype.placeBlock = function() {
 		var cells = this.moving_block.getCells();
