@@ -78,12 +78,15 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 			if (event.keyCode === 37) { //left
 				self.board.shiftBlockLeft();
 				self.render.draw(self.board);
+				self.move_sound.play();
 			} else if (event.keyCode === 38) { //up
 				self.board.rotateBlockCW();
 				self.render.draw(self.board);
+				self.rotate_sound.play();
 			} else if (event.keyCode === 39) { //right
 				self.board.shiftBlockRight();
 				self.render.draw(self.board);
+				self.move_sound.play();
 			} else if (event.keyCode === 40) { //down
 				if (!self.down) {
 					self.down = true;
@@ -135,20 +138,23 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 
 	Game.prototype.tick = function(tick_again) {
 		var next_tick = this.board.tick(this.period);
-		this.render.draw(this.board);
-		var self = this;
 
-		var func = (function(self) {
-			return function() {
-				self.tick(true);
-			};
-		})(this);
+		if (!this.board.ended) {
+			this.render.draw(this.board);
+			var self = this;
 
-		if (tick_again) {
-			if (next_tick >= 0) {
-				this.interval = window.setTimeout(func, next_tick);
-			} else {
-				this.interval = window.setTimeout(func, this.period);
+			var func = (function(self) {
+				return function() {
+					self.tick(true);
+				};
+			})(this);
+
+			if (tick_again) {
+				if (next_tick >= 0) {
+					this.interval = window.setTimeout(func, next_tick);
+				} else {
+					this.interval = window.setTimeout(func, this.period);
+				}
 			}
 		}
 	};
@@ -173,6 +179,9 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 		this.board.reset();
 		this.render.draw(this.board);
 	};
+
+	Game.prototype.move_sound = new Audio('tetris/sounds/move.wav');
+	Game.prototype.rotate_sound = new Audio('tetris/sounds/rotate.wav');
 
 	return Game;
 });
