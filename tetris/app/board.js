@@ -15,6 +15,7 @@ define(['app/blocks'], function(block_manager) {
 			this.cells[i] = null;
 		}
 		this.last_tick = Date.now();
+		this.head_row = this.cells.length - 1;
 	}
 
 	Board.prototype.tick = function(period) {
@@ -131,6 +132,9 @@ define(['app/blocks'], function(block_manager) {
 		var rx = x, ry = y + 2;
 
 		if (!this.cells[ry]) {
+			if (ry < this.head_row) {
+				this.head_row = ry;
+			}
 			this.createRowArray(ry);
 		}
 
@@ -178,6 +182,7 @@ define(['app/blocks'], function(block_manager) {
 					r2--;
 				}
 				this.cells[r2 + 1] = null;
+				this.head_row++;
 			}
 
 			if (!row_full) {

@@ -80,7 +80,7 @@ define(function() {
 		button.type = 'button';
 		button.value = 'Play Again';
 		button.className = 'tetris-button';
-		button.id = 'start-button';
+		button.id = 'start-button'; //ripping off the Start Menu css
 
 		button.onclick = function() {
 			self.clear();
