@@ -13,6 +13,7 @@ define(['app/blocks'], function(block_manager) {
 		for (var i = 0; i < this.cells.length; i++) {
 			this.cells[i] = null;
 		}
+		this.rows_cleared = 0;
 		this.last_tick = Date.now();
 		this.head_row = this.cells.length;
 
@@ -204,6 +205,7 @@ define(['app/blocks'], function(block_manager) {
 				}
 				this.cells[r2 + 1] = null;
 				this.head_row++;
+				this.rows_cleared++;
 			}
 
 			if (!row_full) {

@@ -1,6 +1,9 @@
 define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, Board, BlockManager, GUI) {
 	//BlockManager.registerBlockType('dot', [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}]);
 	//BlockManager.registerBlockType('swag', [{x: 0, y: 0}, {x: 1, y: 1}, {x: 2, y: 2}]);
+	var START_PERIOD = 500;
+	var ROWS_PER_LEVEL = 10;
+
 	function c(x, y) {
 		return {x: x, y: y};
 	}
@@ -67,9 +70,11 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 		this.board = new Board();
 		this.render = new Renderer(element);
 		this.gui = new GUI(element);
-		this.period = 200;
+		this.period = START_PERIOD;
 		this.interval = null;
 		this.state = 'start'; //start, paused, active, ended
+		this.lines = 0;
+		this.level = 1;
 
 		var self = this;
 
@@ -90,7 +95,7 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 			} else if (event.keyCode === 40) { //down
 				if (!self.down) {
 					self.down = true;
-					self.period -= 100;
+					self.period *= 0.5;
 
 					//reset interval and go ahead with a tick
 					self.resetInterval();
@@ -111,9 +116,10 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 				self.tick(false);
 			}
 		});
+
 		this.canvas.addEventListener('keyup', function(event) {
 			if (event.keyCode === 40) {
-				self.period += 100;
+				self.period /= 0.5;
 				self.down = false;
 				self.resetInterval();
 			}
@@ -148,6 +154,13 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 		var next_tick = this.board.tick(this.period);
 
 		if (!this.board.ended) {
+			if (this.board.rows_cleared > this.lines) {
+				this.lines = this.board.rows_cleared;
+				if (this.level * ROWS_PER_LEVEL <= this.lines) {
+					this.level++;
+					this.period *= 0.9;
+				}
+			}
 			this.render.draw(this.board);
 			var self = this;
 
@@ -197,6 +210,11 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 	Game.prototype.reset = function() {
 		this.board.reset();
 		this.render.draw(this.board);
+
+		this.state = 'newgame'; //start, paused, active, ended
+		this.lines = 0;
+		this.level = 1;
+		this.period = START_PERIOD;
 	};
 
 	Game.prototype.move_sound = new Audio('tetris/sounds/move.wav');
