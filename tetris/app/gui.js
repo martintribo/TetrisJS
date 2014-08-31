@@ -52,7 +52,7 @@ define(function() {
 
 		var title = document.createElement('h1');
 		title.id = 'tetris-title';
-		title.innerHTML = 'Tetrominos!';
+		title.innerHTML = 'Tetrominoes!';
 
 		div.appendChild(title);
 		div.appendChild(button);
