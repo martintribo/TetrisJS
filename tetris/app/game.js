@@ -91,6 +91,8 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 				if (!self.down) {
 					self.down = true;
 					self.period -= 100;
+
+					//reset interval and go ahead with a tick
 					self.resetInterval();
 					self.tick(false);
 				}
@@ -101,6 +103,12 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 				} else {
 					self.pause();
 				}
+			} else if (event.keyCode == 32) {
+				self.board.dropBlock();
+				
+				//reset interval and go ahead with a tick
+				self.resetInterval();
+				self.tick(false);
 			}
 		});
 		this.canvas.addEventListener('keyup', function(event) {
@@ -179,7 +187,7 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 
 	Game.prototype.showEnd = function() {
 		var self = this;
-		
+
 		this.gui.showEnd(function() {
 			self.reset();
 			self.start();

@@ -57,6 +57,12 @@ define(['app/blocks'], function(block_manager) {
 
 		this.last_move = Date.now();
 	};
+	Board.prototype.dropBlock = function() {
+		this.moving_block.x = this.s_block.x;
+		this.moving_block.y = this.s_block.y;
+
+		this.handlePlace();
+	};
 	Board.prototype.shiftBlockRight = function() {
 		this.moving_block.moveRight();
 
