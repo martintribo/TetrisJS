@@ -9,13 +9,14 @@ define(['app/blocks'], function(block_manager) {
 		this.rows = 20;
 		this.columns = 10;
 		this.ended = false;
-		this.setupNewBlock();
 		this.cells = new Array(this.rows + 2);
 		for (var i = 0; i < this.cells.length; i++) {
 			this.cells[i] = null;
 		}
 		this.last_tick = Date.now();
-		this.head_row = this.cells.length - 1;
+		this.head_row = this.cells.length;
+
+		this.setupNewBlock();
 	}
 
 	Board.prototype.tick = function(period) {
@@ -61,6 +62,8 @@ define(['app/blocks'], function(block_manager) {
 
 		if (this.moving_block.rightOf(this.columns - 1) || this.blockTouchingCells(this.moving_block)) {
 			this.moving_block.moveLeft();
+		} else {
+			this.updateShadowBlock();
 		}
 
 		this.last_move = Date.now();
@@ -70,6 +73,8 @@ define(['app/blocks'], function(block_manager) {
 
 		if (this.moving_block.leftOf(0) || this.blockTouchingCells(this.moving_block)) {
 			this.moving_block.moveRight();
+		} else {
+			this.updateShadowBlock();
 		}
 
 		this.last_move = Date.now();
@@ -91,6 +96,8 @@ define(['app/blocks'], function(block_manager) {
 
 		if (!placed) {
 			this.moving_block.rotateCCW();
+		} else {
+			this.updateShadowBlock();
 		}
 
 		this.last_move = Date.now();
@@ -112,6 +119,8 @@ define(['app/blocks'], function(block_manager) {
 
 		if (!placed) {
 			this.moving_block.rotateCW();
+		} else {
+			this.updateShadowBlock();
 		}
 
 		this.last_move = Date.now();
@@ -120,6 +129,9 @@ define(['app/blocks'], function(block_manager) {
 		this.moving_block = block_manager.randomBlock();
 		this.moving_block.x = 3;
 		this.moving_block.y = -2;
+
+		this.s_block = new block_manager.Block(this.moving_block);
+		this.updateShadowBlock();
 	};
 	Board.prototype.getBlocks = function() {
 		return this.blocks;
@@ -127,6 +139,9 @@ define(['app/blocks'], function(block_manager) {
 	Board.prototype.getMovingBlock = function() {
 		return this.moving_block;
 	};
+	Board.prototype.getShadowBlock = function() {
+		return this.s_block;
+	}
 
 	Board.prototype.setCell = function(x, y, color) {
 		var rx = x, ry = y + 2;
@@ -167,7 +182,7 @@ define(['app/blocks'], function(block_manager) {
 		}
 
 		return false;
-	}
+	};
 
 	Board.prototype.checkRows = function() {
 		var r = this.cells.length - 1;
@@ -200,7 +215,25 @@ define(['app/blocks'], function(block_manager) {
 		}
 
 		return row_full;
-	}
+	};
+
+	Board.prototype.updateShadowBlock = function() {
+		this.s_block.rotation = this.moving_block.rotation;
+		this.s_block.x = this.moving_block.x;
+		this.s_block.y = this.moving_block.y;
+
+		var y_size = this.s_block.getCells().length;
+
+		var start_y = this.head_row - y_size;
+
+		this.s_block.y = start_y;
+
+		while (!this.s_block.beneath(this.rows-1) && !this.blockTouchingCells(this.s_block)) {
+			this.s_block.y++;
+		}
+
+		this.s_block.y--;
+	};
 
 	return Board;
 });

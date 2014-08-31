@@ -85,6 +85,7 @@ define(function() {
 		}
 
 		this.drawBlock(board.getMovingBlock());
+		this.drawBlock(board.getShadowBlock());
 		this.drawLines();
 	};
 
