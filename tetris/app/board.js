@@ -53,7 +53,10 @@ define(['app/blocks'], function(block_manager) {
 	Board.prototype.placeBlock = function() {
 		var cells = this.moving_block.getCells();
 		for (var i = 0; i < cells.length; i++) {
-			this.setCell(this.moving_block.x + cells[i].x, this.moving_block.y + cells[i].y, this.moving_block.getColor());
+			var cell_x = this.moving_block.x + cells[i].x;
+			var cell_y = this.moving_block.y + cells[i].y;
+
+			this.setCell(cell_x, cell_y, this.moving_block.getColor());
 		}
 
 		this.last_move = Date.now();
@@ -94,7 +97,11 @@ define(['app/blocks'], function(block_manager) {
 		for (var i = 0; !placed && i < kicks.length; i++) {
 			this.moving_block.shift(kicks[i]);
 
-			if (!this.moving_block.leftOf(0) && !this.moving_block.rightOf(this.columns - 1) && !this.moving_block.beneath(this.rows-1) && !this.blockTouchingCells(this.moving_block)) {
+			if (!this.moving_block.leftOf(0) && 
+				!this.moving_block.rightOf(this.columns - 1) && 
+				!this.moving_block.beneath(this.rows-1) && 
+				!this.blockTouchingCells(this.moving_block)) {
+
 				placed = true;
 			} else {
 				this.moving_block.shift({x: -kicks[i].x, y: -kicks[i].y});
@@ -117,7 +124,11 @@ define(['app/blocks'], function(block_manager) {
 		for (var i = 0; !placed && i < kicks.length; i++) {
 			this.moving_block.shift(kicks[i]);
 
-			if (!this.moving_block.leftOf(0) && !this.moving_block.rightOf(this.columns - 1) && !this.moving_block.beneath(this.rows-1) && !this.blockTouchingCells(this.moving_block)) {
+			if (!this.moving_block.leftOf(0) && 
+				!this.moving_block.rightOf(this.columns - 1) && 
+				!this.moving_block.beneath(this.rows-1) && 
+				!this.blockTouchingCells(this.moving_block)) {
+				
 				placed = true;
 			} else {
 				this.moving_block.shift({x: -kicks[i].x, y: -kicks[i].y});

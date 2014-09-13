@@ -38,9 +38,12 @@ define(function() {
 
 	Renderer.prototype.drawCell = function(x, y, color) {
 		if (y >= 0) {
+			var start_x = this.x_offset + this.line_width*(x+1) + this.scale*x;
+			var start_y = this.y_offset + this.line_width*(y+1) + this.scale*y;
+
 			this.context.beginPath();
 			this.context.fillStyle = color;
-			this.context.fillRect(this.x_offset + this.line_width*(x+1) + this.scale*x, this.y_offset + this.line_width*(y+1) + this.scale*y, this.scale, this.scale);
+			this.context.fillRect(start_x, start_y, this.scale, this.scale);
 		}
 	};
 
@@ -59,11 +62,17 @@ define(function() {
 		this.context.fillStyle = '#AAAAAA';
 
 		for (var x = 0; x < 11; x++) {
-			this.context.fillRect(this.x_offset + x*this.line_width + x*this.scale, this.y_offset, this.line_width, this.board_height);
+			var start_x = this.x_offset + x*this.line_width + x*this.scale;
+			var start_y = this.y_offset;
+
+			this.context.fillRect(start_x, start_y, this.line_width, this.board_height);
 		}
 
 		for (var y = 0; y < 21; y++) {
-			this.context.fillRect(this.x_offset, this.y_offset + y*this.line_width + y*this.scale, this.board_width, this.line_width);
+			var start_x = this.x_offset;
+			var start_y = this.y_offset + y*this.line_width + y*this.scale;
+
+			this.context.fillRect(start_x, start_y, this.board_width, this.line_width);
 		}
 	};
 
