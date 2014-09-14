@@ -70,7 +70,7 @@ define(function() {
 		this.background_div = div;
 	}
 
-	GUI.prototype.showEnd = function(callback) {
+	GUI.prototype.showEnd = function(score, callback) {
 		this.clear();
 		var self = this;
 		var div = document.createElement('div');
@@ -89,7 +89,7 @@ define(function() {
 
 		var title = document.createElement('h1');
 		title.id = 'tetris-title';
-		title.innerHTML = 'Score: ';
+		title.innerHTML = 'Score: ' + score;
 
 		div.appendChild(title);
 		div.appendChild(button);

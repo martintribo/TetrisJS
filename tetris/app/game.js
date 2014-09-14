@@ -75,6 +75,8 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 		this.state = 'start'; //start, paused, active, ended
 		this.lines = 0;
 		this.level = 1;
+		this.seq_rows_cleared = 0;
+		this.score = 0;
 
 		var self = this;
 
@@ -155,12 +157,20 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 
 		if (!this.board.ended) {
 			if (this.board.rows_cleared > this.lines) {
+				var rows_cleared = this.board.rows_cleared - this.lines;
 				this.lines = this.board.rows_cleared;
+				this.seq_rows_cleared++;
+
 				if (this.level * ROWS_PER_LEVEL <= this.lines) {
 					this.level++;
 					this.period *= 0.9;
 				}
+
+				this.score += rows_cleared * this.seq_rows_cleared * 100 * (this.level*0.3 + 1);
+			} else {
+				this.seq_rows_cleared = 0;
 			}
+
 			this.render.draw(this.board);
 			var self = this;
 
@@ -201,7 +211,7 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 	Game.prototype.showEnd = function() {
 		var self = this;
 
-		this.gui.showEnd(function() {
+		this.gui.showEnd(this.score, function() {
 			self.reset();
 			self.start();
 		});
@@ -215,6 +225,8 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 		this.lines = 0;
 		this.level = 1;
 		this.period = START_PERIOD;
+		this.seq_rows_cleared = 0;
+		this.score = 0;
 	};
 
 	Game.prototype.move_sound = new Audio('tetris/sounds/move.wav');
