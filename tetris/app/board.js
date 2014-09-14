@@ -128,7 +128,7 @@ define(['app/blocks'], function(block_manager) {
 				!this.moving_block.rightOf(this.columns - 1) && 
 				!this.moving_block.beneath(this.rows-1) && 
 				!this.blockTouchingCells(this.moving_block)) {
-				
+
 				placed = true;
 			} else {
 				this.moving_block.shift({x: -kicks[i].x, y: -kicks[i].y});
@@ -245,7 +245,9 @@ define(['app/blocks'], function(block_manager) {
 
 		var start_y = this.head_row - y_size;
 
-		this.s_block.y = start_y;
+		if (start_y > this.s_block.y) {
+			this.s_block.y = start_y;
+		}
 
 		while (!this.s_block.beneath(this.rows-1) && !this.blockTouchingCells(this.s_block)) {
 			this.s_block.y++;
