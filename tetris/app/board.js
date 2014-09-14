@@ -242,8 +242,9 @@ define(['app/blocks'], function(block_manager) {
 		this.s_block.y = this.moving_block.y;
 
 		var y_size = this.s_block.getCells().length;
+		console.log(y_size);
 
-		var start_y = this.head_row - y_size;
+		var start_y = this.head_row - (y_size + 1);
 
 		if (start_y > this.s_block.y) {
 			this.s_block.y = start_y;
