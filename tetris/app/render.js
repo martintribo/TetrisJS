@@ -98,6 +98,7 @@ define(function() {
 		this.drawBlock(board.getMovingBlock());
 		this.drawShadowBlock(board.getShadowBlock());
 		this.drawLines();
+		this.drawNextBlock(board.getNextBlock());
 	};
 
 	Renderer.prototype.drawBlock = function(b) {
@@ -112,6 +113,18 @@ define(function() {
 		this.context.globalAlpha = 0.3;
 		this.drawBlock(b);
 		this.context.globalAlpha = 1;
+	}
+
+	Renderer.prototype.drawNextBlock = function(b) {
+		var space_offset = 9;
+		var block_pos_x = space_offset + b.getX();
+		var block_pos_y = 5;
+		var cells = b.getCells();
+
+		for (var i = 0; i < cells.length; i++) {
+			var c = cells[i];
+			this.drawCell(block_pos_x + c.x, block_pos_y + c.y, b.getColor());
+		}
 	}
 
 	return Renderer;

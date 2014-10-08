@@ -144,9 +144,17 @@ define(['app/blocks'], function(block_manager) {
 		this.last_move = Date.now();
 	};
 	Board.prototype.setupNewBlock = function() {
-		this.moving_block = block_manager.randomBlock();
-		this.moving_block.x = 3;
-		this.moving_block.y = -2;
+		if (this.next_block) {
+			this.moving_block = this.next_block;
+		} else {
+			this.moving_block = block_manager.randomBlock();
+			this.moving_block.x = 3;
+			this.moving_block.y = -2;
+		}
+
+		this.next_block = block_manager.randomBlock();
+		this.next_block.x = 3;
+		this.next_block.y = -2;
 
 		this.s_block = new block_manager.Block(this.moving_block);
 		this.updateShadowBlock();
@@ -159,6 +167,9 @@ define(['app/blocks'], function(block_manager) {
 	};
 	Board.prototype.getShadowBlock = function() {
 		return this.s_block;
+	}
+	Board.prototype.getNextBlock = function() {
+		return this.next_block;
 	}
 
 	Board.prototype.setCell = function(x, y, color) {
@@ -242,7 +253,6 @@ define(['app/blocks'], function(block_manager) {
 		this.s_block.y = this.moving_block.y;
 
 		var y_size = this.s_block.getCells().length;
-		console.log(y_size);
 
 		var start_y = this.head_row - (y_size + 1);
 
