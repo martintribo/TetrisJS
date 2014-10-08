@@ -20,7 +20,9 @@ define(function() {
 		this.canvas.width = this.width;
 		this.canvas.height = this.height;
 
-		var width_scale = (this.canvas.width - 11 * this.line_width) / 10;
+		//subtract line pixels from length of screen, 
+		//divide that by the number of cells needing to be displayed in the remaining space
+		var width_scale = (this.canvas.width - 21 * this.line_width) / 20;
 		var height_scale = (this.canvas.height - 21 * this.line_width) / 20;
 
 		if (width_scale < height_scale) {
@@ -32,7 +34,7 @@ define(function() {
 		this.board_width = this.scale * 10 + 11 * this.line_width;
 		this.board_height = this.scale * 20 + 21 * this.line_width;
 
-		this.x_offset = (this.width - this.board_width) / 2;
+		this.x_offset = (this.width - 2*this.board_width) / 2;
 		this.y_offset = (this.height - this.board_height) / 2; 
 	};
 
