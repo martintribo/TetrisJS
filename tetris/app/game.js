@@ -8,6 +8,24 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 		return {x: x, y: y};
 	}
 
+	function block(cells, center) {
+		var block = [];
+		block[0] = cells;
+		for (var r = 1; r < 4; r++) {
+			var pcells = block[r - 1];
+			block[r] = [];
+
+			for (var i = 0; i < pcells.length; i++) {
+				var cell = pcells[i];
+				var x = (cell.y - center.y) + center.x;
+				var y = -(cell.x - center.x) + center.y;
+				block[r][i] = {x: x, y: y};
+			}
+		}
+
+		return block;
+	}
+
 	//BlockManager.registerBlockType('test', [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}, {x: 3, y: 0}, {x: 4, y: 0}]);
 	var standardRotationChecks = [
 		[c(0, 0), c(-1, 0), c(-1,1), c( 0,-2), c(-1,-2)],
@@ -29,31 +47,11 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 		[c(0,2), c(1, 2), c(2, 2), c(3, 2)],
 		[c(1, 0), c(1, 1), c(1, 2), c(1, 3)],
 	], iRotationChecks, 'turquoise');
-	BlockManager.registerBlockType('J', [
-		[c(0, 0), c(0, 1), c(1, 1), c(2, 1)],
-		[c(1, 0), c(2, 0), c(1, 1), c(1, 2)],
-		[c(0, 1), c(1, 1), c(2, 1), c(2, 2)],
-		[c(1, 0), c(1, 1), c(1, 2), c(0, 2)]
-	], standardRotationChecks, 'magenta');
-	BlockManager.registerBlockType('L', [
-		[c(0, 1), c(1, 1), c(2, 1), c(2, 0)],
-		[c(1, 0), c(1, 1), c(1, 2), c(2, 2)],
-		[c(0, 2), c(0, 1), c(1, 1), c(2, 1)],
-		[c(0, 0), c(1, 0), c(1, 1), c(1, 2)]
-	], standardRotationChecks, 'lime');
-	BlockManager.registerBlockType('O', [
-		[c(1, 0), c(2, 0), c(1, 1), c(2, 1)],
-		[c(1, 0), c(2, 0), c(1, 1), c(2, 1)],
-		[c(1, 0), c(2, 0), c(1, 1), c(2, 1)],
-		[c(1, 0), c(2, 0), c(1, 1), c(2, 1)]
-	], standardRotationChecks, 'yellow');
-	BlockManager.registerBlockType('S', [
-		[c(0, 1), c(1, 1), c(1, 0), c(2, 0)],
-		[c(1, 0), c(1, 1), c(2, 1), c(2, 2)],
-		[c(0, 2), c(1, 2), c(1, 1), c(2, 1)],
-		[c(0, 0), c(0, 1), c(1, 1), c(1, 2)]
-	], standardRotationChecks, 'green');
-	BlockManager.registerBlockType('T', [
+	BlockManager.registerBlockType('E', block([c(0, 0), c(1, 0), c(2, 0), c(0, 1), c(2, 1), c(0, 2), c(1, 2), c(2, 2), c(0, 3), c(0, 4), c(1, 4), c(2, 4)], c(1, 1)), standardRotationChecks, 'magenta');
+	BlockManager.registerBlockType('A', block([c(0, 0), c(1, 0), c(2, 0), c(0, 1), c(2, 1), c(0, 2), c(1, 2), c(2, 2), c(2, 3)], c(1, 1)), standardRotationChecks, 'lime');
+	BlockManager.registerBlockType('Y', block([c(0, 0), c(0, 1), c(1, 1), c(2, 0), c(2, 1), c(2, 2)], c(1, 1)), standardRotationChecks, 'yellow');
+	BlockManager.registerBlockType('S', block([c(2, 0), c(1, 0), c(0, 0), c(0, 1), c(0, 2), c(1, 2), c(2, 2), c(2, 3), c(2, 4), c(1, 4), c(0, 4)], c(1, 2)), standardRotationChecks, 'green');
+	/*BlockManager.registerBlockType('T', [
 		[c(0, 1), c(1, 1), c(1, 0), c(2, 1)],
 		[c(1, 0), c(1, 1), c(2, 1), c(1, 2)],
 		[c(0, 1), c(1, 1), c(1, 2), c(2, 1)],
@@ -64,7 +62,7 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 		[c(2, 0), c(2, 1), c(1, 1), c(1, 2)],
 		[c(0, 1), c(1, 1), c(1, 2), c(2, 2)],
 		[c(1, 0), c(1, 1), c(0, 1), c(0, 2)]
-	], standardRotationChecks, 'red'); 
+	], standardRotationChecks, 'red'); */
 
 	var Game = function(element) {
 		this.board = new Board();
