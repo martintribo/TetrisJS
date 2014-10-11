@@ -68,7 +68,7 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 
 	var Game = function(element) {
 		this.board = new Board();
-		this.render = new Renderer(element);
+		this.renderer = new Renderer(element);
 		this.gui = new GUI(element);
 		this.period = START_PERIOD;
 		this.interval = null;
@@ -84,15 +84,15 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 		this.canvas.addEventListener('keydown', function(event) {
 			if (event.keyCode === 37) { //left
 				self.board.shiftBlockLeft();
-				self.render.draw(self.board);
+				self.render();
 				self.move_sound.play();
 			} else if (event.keyCode === 38) { //up
 				self.board.rotateBlockCW();
-				self.render.draw(self.board);
+				self.render();
 				self.rotate_sound.play();
 			} else if (event.keyCode === 39) { //right
 				self.board.shiftBlockRight();
-				self.render.draw(self.board);
+				self.render();
 				self.move_sound.play();
 			} else if (event.keyCode === 40) { //down
 				if (!self.down) {
@@ -127,9 +127,13 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 			}
 		});
 
-		this.render.draw(this.board);
+		this.render();
 		this.showStart();
 	};
+
+	Game.prototype.render = function() {
+		this.renderer.draw(this.board, this.score);
+	}
 
 	Game.prototype.resetInterval = function() {
 		if (this.interval) {
@@ -171,7 +175,7 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 				this.seq_rows_cleared = 0;
 			}
 
-			this.render.draw(this.board);
+			this.render();
 			var self = this;
 
 			var func = (function(self) {
@@ -219,7 +223,7 @@ define(['app/render', 'app/board', 'app/blocks', 'app/gui'], function(Renderer, 
 
 	Game.prototype.reset = function() {
 		this.board.reset();
-		this.render.draw(this.board);
+		this.render();
 
 		this.state = 'newgame'; //start, paused, active, ended
 		this.lines = 0;
