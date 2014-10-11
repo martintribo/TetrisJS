@@ -124,7 +124,6 @@ define(function() {
 		var text_pos_x = block_pos_x - 1.8;
 		var text_pos_y = block_pos_y - 1;
 		var px = 1.45*this.scale;
-		console.log(this.scale);
 
 		var start_x = this.x_offset + this.line_width*(text_pos_x+1) + this.scale*text_pos_x;
 		var start_y = this.y_offset + this.line_width*(text_pos_y+1) + this.scale*text_pos_y;
