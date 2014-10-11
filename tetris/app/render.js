@@ -78,7 +78,7 @@ define(function() {
 		}
 	};
 
-	Renderer.prototype.draw = function(board) {
+	Renderer.prototype.draw = function(board, score) {
 		this.last_board = board;
 		this.drawBackground();
 
@@ -99,6 +99,7 @@ define(function() {
 		this.drawShadowBlock(board.getShadowBlock());
 		this.drawLines();
 		this.drawNextBlock(board.getNextBlock());
+		this.drawScore(score);
 	};
 
 	Renderer.prototype.drawBlock = function(b) {
@@ -107,13 +108,13 @@ define(function() {
 			var c = cells[i];
 			this.drawCell(b.getX() + c.x, b.getY() + c.y, b.getColor());
 		}
-	}
+	};
 
 	Renderer.prototype.drawShadowBlock = function(b) {
 		this.context.globalAlpha = 0.3;
 		this.drawBlock(b);
 		this.context.globalAlpha = 1;
-	}
+	};
 
 	Renderer.prototype.drawNextBlock = function(b) {
 		var space_offset = 10;
@@ -137,6 +138,19 @@ define(function() {
 			this.drawCell(block_pos_x + c.x, block_pos_y + c.y, b.getColor());
 		}
 	}
+
+	Renderer.prototype.drawScore = function(score) {
+		var x = 11.7;
+		var y = 3 + 10;
+		var px = 1.45*this.scale;
+
+		var start_x = this.x_offset + this.line_width*(x+1) + this.scale*x;
+		var start_y = this.y_offset + this.line_width*(y+1) + this.scale*y;
+
+		this.context.fillStyle = '#FFFFFF';
+		this.context.font = "" + px + "px Verdana";
+		this.context.fillText("Score: " + score, start_x, start_y);
+	};
 
 	return Renderer;
 });
