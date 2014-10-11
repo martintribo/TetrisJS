@@ -96,7 +96,7 @@ define(function() {
 		}
 
 		this.drawBlock(board.getMovingBlock());
-		this.drawShadowBlock(board.getShadowBlock());
+		//this.drawShadowBlock(board.getShadowBlock());
 		this.drawLines();
 		this.drawNextBlock(board.getNextBlock());
 		this.drawScore(score);
