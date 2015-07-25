@@ -1,0 +1,11 @@
+{
+	"name": "Simple Tetris Clone",
+	"description": "A simple unofficial browser version of Tetris",
+	"repository": "https://github.com/Nitramtj/TetrisJS",
+	"buildpacks": [
+		{
+			"url": "https://github.com/pearkes/heroku-buildpack-static"
+		}
+	]
+}
+
